@@ -1,0 +1,49 @@
+{
+  "name": "creative-analytics-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "node --import tsx ./node_modules/vitest/vitest.mjs run",
+    "test:watch": "node --import tsx ./node_modules/vitest/vitest.mjs",
+    "db:generate": "prisma generate",
+    "db:migrate": "./scripts/db-migrate.sh",
+    "sync:local": "node --import tsx scripts/sync-local.ts",
+    "sync:meta": "node --import tsx scripts/sync-meta.ts",
+    "sync:wetracked": "node --import tsx scripts/sync-wetracked.ts",
+    "sync:cron": "node --import tsx scripts/sync-cron.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "csv-parse": "^6.1.0",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.3.1",
+    "lucide-react": "^0.575.0",
+    "next": "16.1.6",
+    "node-cron": "^4.2.1",
+    "prisma": "^5.22.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "recharts": "^3.7.0",
+    "tailwind-merge": "^3.5.0",
+    "xlsx": "^0.18.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.33",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  }
+}

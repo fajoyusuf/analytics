@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Creative {
+  creativeId      String   @id
+  status          String?
+  duplicateFlag   String?
+  creativeType    String?
+  targetTraffic   String?
+  type            String?
+  format          String?
+  style           String?
+  angle           String?
+  awarenessLevel  String?
+  createdBy       String?
+  dateCreated     DateTime?
+  dateLaunched    DateTime?
+  linkToAsset     String?
+  winner          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  adMaps AdCreativeMap[]
+}
+
+model Copy {
+  copyId          String   @id
+  creativeType    String?
+  targetTraffic   String?
+  hook            String?
+  angle           String?
+  createdBy       String?
+  dateCreated     DateTime?
+  dateLaunched    DateTime?
+  linkToAsset     String?
+  status          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  adMaps AdCreativeMap[]
+}
+
+model Lander {
+  funnelIdentifier String   @id
+  lander           String?
+  trafficSource    String?
+  frontendLink     String?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  adMaps AdCreativeMap[]
+}
+
+model MetaAd {
+  adId         String   @id
+  adName       String
+  campaignName String?
+  adsetName    String?
+  status       String?
+  createdTime  DateTime?
+  isSimulated  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  insights DailyMetaInsights[]
+  maps     AdCreativeMap[]
+}
+
+model DailyMetaInsights {
+  id          String   @id @default(cuid())
+  date        DateTime
+  adId        String
+  spend       Float    @default(0)
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  cpm         Float    @default(0)
+  cpc         Float    @default(0)
+  ctr         Float    @default(0)
+  createdAt   DateTime @default(now())
+
+  ad MetaAd @relation(fields: [adId], references: [adId], onDelete: Cascade)
+
+  @@unique([date, adId])
+  @@index([date])
+  @@index([adId])
+}
+
+model DailyWeTracked {
+  id          String   @id @default(cuid())
+  date        DateTime
+  trackingKey String?
+  adId        String?
+  adName      String?
+  creativeId  String?
+  revenue     Float    @default(0)
+  purchases   Int      @default(0)
+  profit      Float    @default(0)
+  roas        Float    @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([date])
+  @@index([creativeId])
+}
+
+model AdCreativeMap {
+  id               String   @id @default(cuid())
+  adId             String
+  funnelIdentifier String?
+  creativeId       String?
+  copyId           String?
+  product          String?
+  parseStatus      String
+  source           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  ad      MetaAd   @relation(fields: [adId], references: [adId], onDelete: Cascade)
+  creative Creative? @relation(fields: [creativeId], references: [creativeId])
+  copy    Copy?    @relation(fields: [copyId], references: [copyId])
+  lander  Lander?  @relation(fields: [funnelIdentifier], references: [funnelIdentifier])
+
+  @@unique([adId, source])
+  @@index([creativeId])
+  @@index([funnelIdentifier])
+}
+
+model UnmappedAd {
+  id         String   @id @default(cuid())
+  adId       String?
+  adName     String
+  reason     String
+  detailsJson String?
+  firstSeen  DateTime @default(now())
+  lastSeen   DateTime @default(now())
+
+  @@unique([adName, reason])
+  @@index([adId])
+}
+
+model ManualOverride {
+  id                       String   @id @default(cuid())
+  adId                     String?  @unique
+  adName                   String?  @unique
+  funnelIdentifierOverride String?
+  creativeIdOverride       String?
+  copyIdOverride           String?
+  productOverride          String?
+  notes                    String?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model SyncRun {
+  id         String   @id @default(cuid())
+  type       String
+  status     String
+  startedAt  DateTime @default(now())
+  finishedAt DateTime?
+  countsJson String?
+  error      String?
+}

@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mija | Landing</title>
+  <style>
+    :root {
+      --bg-0: #050608;
+      --bg-1: #0a0d12;
+      --bg-2: #151922;
+      --text: #e8ecf3;
+      --muted: #98a4b8;
+      --accent-a: #8fb6ff;
+      --accent-b: #caa8ff;
+      --card: rgba(255, 255, 255, 0.035);
+      --border: rgba(255, 255, 255, 0.12);
+      --glow: 0 0 28px rgba(156, 182, 255, 0.25);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, #1b2232 0%, transparent 36%),
+                  radial-gradient(circle at 85% 15%, #261f35 0%, transparent 34%),
+                  linear-gradient(145deg, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Subtle film-grain noise texture */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 0.4px, transparent 0.4px);
+      background-size: 3px 3px;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(8, 10, 14, 0.62);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 650;
+      color: #f3f6ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      list-style: none;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: #e6eeff;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      position: relative;
+      padding: 6rem 1rem 3rem;
+      overflow: hidden;
+      animation: pageFadeIn 1s ease both;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: min(900px, 95%);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 7vw, 5.3rem);
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      background: linear-gradient(110deg, #e7f0ff 5%, #c9d8ff 48%, #d6b9ff 95%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 28px rgba(191, 213, 255, 0.23);
+    }
+
+    .hero p {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: #c0c9d8;
+      max-width: 650px;
+      margin-inline: auto;
+    }
+
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    section {
+      padding: 5.5rem 0;
+      position: relative;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .about-text {
+      color: #c8d0de;
+      font-size: 1.02rem;
+      max-width: 62ch;
+    }
+
+    .portrait-placeholder {
+      border: 1px solid var(--border);
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+      border-radius: var(--radius);
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.03), var(--glow);
+      color: #b8c4da;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery-card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      min-height: 150px;
+      padding: 1rem;
+      display: flex;
+      align-items: end;
+      color: #cad4e7;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      box-shadow: inset 0 0 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(169, 193, 255, 0.45);
+      box-shadow: 0 12px 35px rgba(95, 124, 220, 0.15), inset 0 0 0 1px rgba(185, 205, 255, 0.18);
+    }
+
+    /* Contact */
+    .contact-form {
+      margin-top: 1rem;
+      max-width: 700px;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      font: inherit;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .contact-form textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #95b8ff;
+      box-shadow: 0 0 0 3px rgba(130, 165, 255, 0.2), 0 0 25px rgba(125, 152, 255, 0.18);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn {
+      justify-self: start;
+      padding: 0.8rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(156, 181, 255, 0.55);
+      background: linear-gradient(120deg, rgba(116, 144, 226, 0.28), rgba(132, 103, 196, 0.3));
+      color: #edf3ff;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(135, 165, 255, 0.35);
+      filter: brightness(1.08);
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2rem 0 2.4rem;
+      text-align: center;
+      color: #96a3b8;
+    }
+
+    .socials {
+      margin-top: 0.65rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .icon-placeholder {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+      color: #c0cbe0;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portrait-placeholder {
+        min-height: 300px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .nav-inner {
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .nav-links {
+        gap: 0.85rem;
+        font-size: 0.9rem;
+      }
+
+      section {
+        padding: 4.3rem 0;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Minimal top navigation -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a class="logo" href="#home">Mija</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <section class="hero" id="home" aria-label="Hero">
+    <canvas id="particles"></canvas>
+    <div class="hero-content reveal visible">
+      <h1>Welcome To Mija's World</h1>
+      <p>"A place where creativity, imagination and stories live."</p>
+    </div>
+  </section>
+
+  <!-- About section -->
+  <section id="about" class="reveal">
+    <div class="container about-grid">
+      <article>
+        <h2>About Mija</h2>
+        <p class="about-text">
+          Mija is a mysterious creator and storyteller who turns fragments of dreams into living worlds.
+          From whispered ideas to vivid visuals, every piece carries hidden meaning and emotion.
+          Her space is where quiet curiosity meets bold imagination, inviting you to step into stories
+          that feel cinematic, personal, and endlessly unfolding.
+        </p>
+      </article>
+      <aside class="portrait-placeholder" aria-label="Portrait placeholder">
+        Portrait Placeholder
+      </aside>
+    </div>
+  </section>
+
+  <!-- Gallery section -->
+  <section id="gallery" class="reveal">
+    <div class="container">
+      <h2>Gallery</h2>
+      <div class="gallery-grid">
+        <article class="gallery-card">Echoes of Midnight</article>
+        <article class="gallery-card">Silent Aurora</article>
+        <article class="gallery-card">Ink & Starlight</article>
+        <article class="gallery-card">Neon Drift</article>
+        <article class="gallery-card">Moonlit Chapters</article>
+        <article class="gallery-card">Velvet Horizon</article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact section -->
+  <section id="contact" class="reveal">
+    <div class="container">
+      <h2>Contact</h2>
+      <form class="contact-form" action="#" method="post">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button class="btn" type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Mija. All rights reserved.</p>
+      <div class="socials" aria-label="Social icon placeholders">
+        <span class="icon-placeholder">in</span>
+        <span class="icon-placeholder">ig</span>
+        <span class="icon-placeholder">yt</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar glass effect on scroll
+    const navbar = document.getElementById('navbar');
+    const toggleNavbar = () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 18);
+    };
+    toggleNavbar();
+    window.addEventListener('scroll', toggleNavbar, { passive: true });
+
+    // Fade-in reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.reveal').forEach((el) => {
+      if (!el.classList.contains('visible')) observer.observe(el);
+    });
+
+    // Lightweight floating particle effect
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const baseCount = 70;
+
+    function setCanvasSize() {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * ratio);
+      canvas.height = Math.floor(window.innerHeight * ratio);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    function makeParticle() {
+      return {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 1.8 + 0.3,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: -(Math.random() * 0.25 + 0.05),
+        a: Math.random() * 0.5 + 0.15
+      };
+    }
+
+    function initParticles() {
+      particles.length = 0;
+      const count = Math.max(35, Math.round(window.innerWidth / 18));
+      for (let i = 0; i < Math.min(baseCount, count); i++) particles.push(makeParticle());
+    }
+
+    function tickParticles() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y < -8) {
+          p.y = window.innerHeight + 8;
+          p.x = Math.random() * window.innerWidth;
+        }
+        if (p.x < -8) p.x = window.innerWidth + 8;
+        if (p.x > window.innerWidth + 8) p.x = -8;
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(220, 231, 255, ${p.a})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(tickParticles);
+    }
+
+    window.addEventListener('resize', () => {
+      setCanvasSize();
+      initParticles();
+    });
+
+    setCanvasSize();
+    initParticles();
+    tickParticles();
+  </script>
+</body>
+</html>
