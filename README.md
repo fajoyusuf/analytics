@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # analytics
 Creative dashboard
 =======
