@@ -3,18 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "start": "next start",
-    "lint": "eslint",
-    "test": "node --import tsx ./node_modules/vitest/vitest.mjs run",
-    "test:watch": "node --import tsx ./node_modules/vitest/vitest.mjs",
-    "db:generate": "prisma generate",
-    "db:migrate": "./scripts/db-migrate.sh",
-    "sync:local": "node --import tsx scripts/sync-local.ts",
-    "sync:meta": "node --import tsx scripts/sync-meta.ts",
-    "sync:wetracked": "node --import tsx scripts/sync-wetracked.ts",
-    "sync:cron": "node --import tsx scripts/sync-cron.ts"
+  "dev": "next dev --webpack",
+  "start": "next start",
+  "lint": "eslint",
+  "test": "node --import tsx ./node_modules/vitest/vitest.mjs run",
+  "test:watch": "node --import tsx ./node_modules/vitest/vitest.mjs",
+
+  "db:generate": "prisma generate",
+  "db:migrate:local": "./scripts/db-migrate.sh",
+  "db:migrate:prod": "prisma migrate deploy",
+
+  "sync:local": "node --import tsx scripts/sync-local.ts",
+  "sync:meta": "node --import tsx scripts/sync-meta.ts",
+  "sync:wetracked": "node --import tsx scripts/sync-wetracked.ts",
+  "sync:cron": "node --import tsx scripts/sync-cron.ts",
+
+  "build": "prisma generate && prisma migrate deploy && next build --webpack"
+}
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
