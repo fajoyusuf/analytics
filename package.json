@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "start": "next start",
+    "start": "prisma migrate deploy && next start",
     "lint": "eslint",
     "test": "node --import tsx ./node_modules/vitest/vitest.mjs run",
     "test:watch": "node --import tsx ./node_modules/vitest/vitest.mjs",
@@ -18,7 +18,7 @@
     "sync:wetracked": "node --import tsx scripts/sync-wetracked.ts",
     "sync:cron": "node --import tsx scripts/sync-cron.ts",
 
-    "build": "prisma generate && prisma migrate deploy && next build --webpack"
+    "build": "prisma generate && next build --webpack"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
