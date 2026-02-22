@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { DateRangeSelector } from "@/components/dashboard/date-range-selector";
 import { KpiCard } from "@/components/dashboard/kpi-card";
